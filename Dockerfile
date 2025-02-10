@@ -19,9 +19,9 @@ COPY --from=builder /usr/local /usr/local
 
 COPY . .
 
-RUN useradd -m appuser && \
-    chown -R appuser:appuser /app \
+RUN useradd -m appuser
 
+RUN chown -R appuser:appuser /app
 USER appuser
 
 EXPOSE 8000
