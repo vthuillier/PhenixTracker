@@ -1,7 +1,7 @@
 import datetime
 
 from fastapi import APIRouter, HTTPException
-from fastapi.params import Depends
+from fastapi.params import Depends, Query
 from sqlalchemy.orm import Session
 
 import app.crud.physical as crud
@@ -25,11 +25,11 @@ def get_all_physical_data_for_user(
     return [PhysicalOut(**item.__dict__) for item in result]
 
 
-@router.get("/{physical_id}")
+@router.get("/get/{physical_id}")
 def get_physical_data_by_id(
-        physical_id: int, db: Session = Depends(get_db)
+        physical_id: int, db: Session = Depends(get_db), user: User = Depends(get_current_user)
 ) -> PhysicalOut:
-    result = crud.get_physical_data_by_id(db, physical_id)
+    result = crud.get_physical_data_by_id(db, physical_id, user.id)
 
     if not result:
         raise HTTPException(status_code=404, detail="Physical data not found")
@@ -63,7 +63,7 @@ def delete_physical_data(
 
 @router.get("/period")
 def get_physical_data_by_period(
-        start_date: str | None, end_date: str | None, db: Session = Depends(get_db),
+        start_date: str | None = Query(None), end_date: str | None = Query(None), db: Session = Depends(get_db),
         user: User = Depends(get_current_user)
 ) -> list[PhysicalOut]:
     if not start_date:
