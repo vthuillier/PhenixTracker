@@ -1,4 +1,5 @@
 from sqlalchemy import Column, Date, Integer, String
+from sqlalchemy.orm import relationship
 
 from app.db.session import Base
 
@@ -12,3 +13,5 @@ class User(Base):
     birthdate = Column(Date, nullable=False)
     email = Column(String, unique=True, index=True)
     hashed_password = Column(String, nullable=False)
+
+    physical_data = relationship("Physical", back_populates="user")

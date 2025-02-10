@@ -16,7 +16,7 @@ def register(user: UserCreate, db: Session = Depends(get_db)):
     if db_user:
         raise HTTPException(status_code=400, detail="User already registered")
 
-    return crud.create_user(db=db, userCreate=user)
+    return crud.create_user(db=db, user_create=user)
 
 
 @router.get("/me", response_model=UserMe)

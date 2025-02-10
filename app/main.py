@@ -4,7 +4,7 @@ from fastapi import Depends, FastAPI, HTTPException
 from fastapi.security import OAuth2PasswordRequestForm
 from sqlalchemy.orm import Session
 
-from app.api.v1.endpoints import user
+from app.api.v1.endpoints import physical, user
 from app.core.config import settings
 from app.core.security import create_access_token
 from app.db.session import Base, engine
@@ -17,6 +17,7 @@ Base.metadata.create_all(bind=engine)
 app = FastAPI(title="PhenixTracker - API", version="0.0.1")
 
 app.include_router(user.router, prefix="/users", tags=["Users"])
+app.include_router(physical.router, prefix="/physical", tags=["Physical"])
 
 
 @app.get("/")
