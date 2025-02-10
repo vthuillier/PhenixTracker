@@ -18,20 +18,5 @@ class PhysicalOut(PhysicalAdd):
         orm_mode = True
 
 
-class PhysicalUpdate(PhysicalAdd):
-    pass
-
-
 class PhysicalDelete(BaseModel):
     id: int
-
-
-class PhysicalList(BaseModel):
-    id: int
-    date: date
-    weight: float
-    height: float
-    user_id: int
-
-    class Config:
-        orm_mode = True

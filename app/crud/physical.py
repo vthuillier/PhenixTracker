@@ -41,7 +41,15 @@ def update_physical_data(
     return db_physical
 
 
-def delete_physical_data(db: Session, physical_data: Physical) -> Physical:
-    db.delete(physical_data)
-    db.commit()
-    return physical_data
+def delete_physical_data(db: Session, physical_data_id: int) -> bool:
+    db_physical = get_physical_data_by_id(db, physical_data_id)
+    if db_physical:
+        db.delete(db_physical)
+        db.commit()
+        return True
+    return False
+
+
+def get_physical_data_by_period(db: Session, user_id: int, start_date: str, end_date: str):
+    return db.query(Physical).filter(Physical.user_id == user_id, Physical.date >= start_date,
+                                     Physical.date <= end_date).all()
