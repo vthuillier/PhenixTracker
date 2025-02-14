@@ -33,6 +33,14 @@ def read_users_me(current_user: User = Depends(get_current_user)) -> UserMe:
     return UserMe(**current_user.__dict__)
 
 
+@router.delete("/me", response_model=bool)
+def delete_user_me(db: Session = Depends(get_db), user: User = Depends(get_current_user)) -> bool:
+    """
+    Endpoint protégé : supprime l'utilisateur connecté.
+    """
+    return crud.delete_user(db, user)
+
+
 @router.patch("/password", response_model=ResetPasswordOut)
 def reset_password(
         reset_password: ResetPassword,

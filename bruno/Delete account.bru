@@ -1,0 +1,20 @@
+meta {
+  name: Delete account
+  type: http
+  seq: 5
+}
+
+delete {
+  url: http://localhost:8000/users/me
+  body: none
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{token}}
+}
+
+assert {
+  res.status: eq 200
+  res.body: eq true
+}

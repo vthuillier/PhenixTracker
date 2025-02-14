@@ -35,3 +35,9 @@ def reset_password(db: Session, default_password: str, new_password: str, user: 
     db_user.hashed_password = hash_password(new_password)
     db.commit()
     return True
+
+
+def delete_user(db: Session, user: User) -> bool:
+    db.delete(user)
+    db.commit()
+    return True
