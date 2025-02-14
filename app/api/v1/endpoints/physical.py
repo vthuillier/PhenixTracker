@@ -55,8 +55,9 @@ def add_physical_data(
 def delete_physical_data(
         physical_data: PhysicalDelete,
         db: Session = Depends(get_db),
+        user: User = Depends(get_current_user)
 ) -> None:
-    if not crud.delete_physical_data(db, physical_data.id):
+    if not crud.delete_physical_data(db, physical_data.id, user.id):
         raise HTTPException(status_code=400, detail="Failed to delete physical data")
     raise HTTPException(status_code=200, detail="Physical data deleted")
 

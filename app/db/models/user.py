@@ -15,3 +15,4 @@ class User(Base):
     hashed_password = Column(String, nullable=False)
 
     physical_data = relationship("Physical", back_populates="user")
+    forgot_password = relationship("ForgotPassword", back_populates="user")

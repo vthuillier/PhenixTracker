@@ -1,0 +1,36 @@
+meta {
+  name: Get personnal token
+  type: http
+  seq: 4
+}
+
+post {
+  url: http://localhost:8000/token
+  body: multipartForm
+  auth: none
+}
+
+body:json {
+  {
+    "username": "user@test.fr",
+    "password": "usertest"
+  }
+}
+
+body:form-urlencoded {
+  "username": user@test.fr
+  "password": usertest
+}
+
+body:multipart-form {
+  username: user@test.fr
+  password: usertest
+}
+
+assert {
+  res.status: eq 200
+}
+
+script:post-response {
+  bru.setVar("token", res.body.access_token)
+}
