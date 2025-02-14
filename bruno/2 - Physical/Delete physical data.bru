@@ -1,0 +1,25 @@
+meta {
+  name: Delete physical data
+  type: http
+  seq: 5
+}
+
+delete {
+  url: http://localhost:8000/physical/delete
+  body: json
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{token}}
+}
+
+body:json {
+  {
+    "id": {{first_phyisical_data}}
+  }
+}
+
+assert {
+  res.status: eq 200
+}

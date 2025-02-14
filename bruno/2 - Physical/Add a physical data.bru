@@ -1,0 +1,31 @@
+meta {
+  name: Add a physical data
+  type: http
+  seq: 2
+}
+
+post {
+  url: http://localhost:8000/physical/add
+  body: json
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{token}}
+}
+
+body:json {
+  {
+    "weight": 77,
+    "height": 173,
+    "date": "2025-02-14"
+  }
+}
+
+assert {
+  res.status: eq 200
+}
+
+script:post-response {
+  bru.setVar("first_phyisical_data", res.body.id)
+}

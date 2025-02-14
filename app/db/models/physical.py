@@ -12,7 +12,7 @@ class Physical(Base):
     height = Column(Double, nullable=False)
     weight = Column(Double, nullable=False)
 
-    # TODO: Add somes fields to this table
+    # TODO: Add some fields to this table
 
     user_id = Column(Integer, ForeignKey("users.id"), nullable=False)
     user = relationship("User", back_populates="physical_data")

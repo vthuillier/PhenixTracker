@@ -12,7 +12,6 @@ class PhysicalAdd(BaseModel):
 
 class PhysicalOut(PhysicalAdd):
     id: int
-    user_id: int
 
     class Config:
         orm_mode = True

@@ -1,0 +1,21 @@
+meta {
+  name: Get added physical data
+  type: http
+  seq: 4
+}
+
+get {
+  url: http://localhost:8000/physical/get/{{first_phyisical_data}}
+  body: none
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{token}}
+}
+
+assert {
+  res.status: eq 200
+  res.body.weight: eq 77
+  res.body.height: eq 173
+}

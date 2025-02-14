@@ -14,5 +14,5 @@ class User(Base):
     email = Column(String, unique=True, index=True)
     hashed_password = Column(String, nullable=False)
 
-    physical_data = relationship("Physical", back_populates="user")
-    forgot_password = relationship("ForgotPassword", back_populates="user")
+    physical_data = relationship("Physical", back_populates="user", cascade="all, delete")
+    forgot_password = relationship("ForgotPassword", back_populates="user", cascade="all, delete")
