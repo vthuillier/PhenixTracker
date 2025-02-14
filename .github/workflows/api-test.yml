@@ -42,7 +42,7 @@ jobs:
       - name: Run tests with Bruno
         run: |
           cd bruno
-          bru run --url http://localhost:8000 --config bruno.json
+          bru run
 
       - name: Stop and remove container
         run: docker stop phenix-tracker-test && docker rm phenix-tracker-test
