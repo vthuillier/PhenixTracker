@@ -1,7 +1,14 @@
-from sqlalchemy import Column, Date, Integer, String
+import enum
+
+from sqlalchemy import Column, Date, Integer, String, Enum
 from sqlalchemy.orm import relationship
 
 from app.db.session import Base
+
+
+class RoleEnum(enum.Enum):
+    USER = "user"
+    ADMIN = "admin"
 
 
 class User(Base):
@@ -13,6 +20,7 @@ class User(Base):
     birthdate = Column(Date, nullable=False)
     email = Column(String, unique=True, index=True)
     hashed_password = Column(String, nullable=False)
+    role = Column(Enum(RoleEnum), default=RoleEnum.USER, nullable=False)
 
     physical_data = relationship("Physical", back_populates="user", cascade="all, delete")
     forgot_password = relationship("ForgotPassword", back_populates="user", cascade="all, delete")

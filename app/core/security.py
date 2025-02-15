@@ -7,7 +7,7 @@ from sqlalchemy.orm import Session
 
 import app.crud.user as crud
 from app.core.config import settings
-from app.db.models.user import User
+from app.db.models.user import User, RoleEnum
 from app.dependencies import get_db
 
 
@@ -57,4 +57,18 @@ def get_current_user(
     if user is None:
         raise credentials_exception
 
+    return user
+
+
+def get_current_admin_user(
+        token: str = Depends(settings.OAUTH2_SCHEME), db: Session = Depends(get_db)
+) -> User | None:
+    """
+    Vérifie le token et retourne l'utilisateur authentifié s'il est admin.
+    """
+    user = get_current_user(token, db)
+    if user.role != RoleEnum.ADMIN:
+        raise HTTPException(
+            status_code=status.HTTP_403_FORBIDDEN, detail="User is not an admin"
+        )
     return user

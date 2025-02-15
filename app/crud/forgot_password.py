@@ -1,9 +1,9 @@
+import os
 from datetime import timedelta, datetime
 
 from sqlalchemy.orm import Session
 
 import app.crud.user as crud_user
-from app.core.security import create_access_token
 from app.db.models.forgot_password import ForgotPassword
 from app.db.models.user import User
 
@@ -35,7 +35,7 @@ def add_forgot_password(db: Session, email: str) -> ForgotPassword | None:
         db.delete(forgotten_password)
         db.commit()
 
-    token = create_access_token({"sub": user.email, "type": "forgot_password"}, expires_delta=timedelta(days=1))
+    token = os.urandom(128).hex()
 
     forgot_password = ForgotPassword(
         user_id=user.id,
