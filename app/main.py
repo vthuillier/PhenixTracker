@@ -1,6 +1,8 @@
+import logging
 from datetime import timedelta
+from time import perf_counter, process_time
 
-from fastapi import Depends, FastAPI, HTTPException
+from fastapi import Depends, FastAPI, HTTPException, Request
 from fastapi.security import OAuth2PasswordRequestForm
 from sqlalchemy.orm import Session
 
@@ -18,6 +20,28 @@ app = FastAPI(title="PhenixTracker - API", version="0.0.1")
 
 app.include_router(user.router, prefix="/users", tags=["Users"])
 app.include_router(physical.router, prefix="/physical", tags=["Physical"])
+
+
+logger = logging.getLogger("[PhenixTracker]")
+logger.setLevel(logging.DEBUG)
+logger.addHandler(logging.StreamHandler())
+
+
+@app.middleware("http")
+async def add_logger(request: Request, call_next):
+    """
+    Middleware to log the request
+    :param request:     (Request)   -   The request object
+    :param call_next:   (function)  -   The next function to call
+    :return:            (Response)  -   The response object
+    """
+    start_time = perf_counter()
+    logger.info(f"Request: {request.method} {request.url}")
+    response = await call_next(request)
+    time = perf_counter() - start_time
+    response.headers["X-Response-Time"] = str(time)
+    logger.info(f"Response: {response.status_code} in {time} seconds")
+    return response
 
 
 @app.get("/")
