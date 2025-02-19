@@ -7,7 +7,11 @@ class PhysicalAdd(BaseModel):
     weight: float
     height: float
     date: date
-    # TODO: Add somes fields to this table
+    arm_circumference: float
+    waist_circumference: float
+    hip_circumference: float
+    thigh_circumference: float
+    calf_circumference: float
 
 
 class PhysicalOut(PhysicalAdd):

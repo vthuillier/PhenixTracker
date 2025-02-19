@@ -18,10 +18,7 @@ def add_physical_data(
         db_physical.weight = physical_data.weight
     else:
         db_physical = Physical(
-            date=physical_data.date,
-            height=physical_data.height,
-            weight=physical_data.weight,
-            user_id=user_id,
+            **physical_data.model_dump(), user_id=user_id
         )
         db.add(db_physical)
 
@@ -42,9 +39,14 @@ def update_physical_data(
         db: Session, physical_data: PhysicalAdd, user_id: int
 ) -> Type[Physical] | None:
     db_physical = get_physical_data_by_id(db, physical_data.id, user_id)
-    db_physical.date = physical_data.date
-    db_physical.height = physical_data.height
-    db_physical.weight = physical_data.weight
+    if db_physical:
+        db_physical.height = physical_data.height if physical_data.height else db_physical.height
+        db_physical.weight = physical_data.weight if physical_data.weight else db_physical.weight
+        db_physical.arm_circumference = physical_data.arm_circumference if physical_data.arm_circumference else db_physical.arm_circumference
+        db_physical.waist_circumference = physical_data.waist_circumference if physical_data.waist_circumference else db_physical.waist_circumference
+        db_physical.hip_circumference = physical_data.hip_circumference if physical_data.hip_circumference else db_physical.hip_circumference
+        db_physical.thigh_circumference = physical_data.thigh_circumference if physical_data.thigh_circumference else db_physical.thigh_circumference
+        db_physical.calf_circumference = physical_data.calf_circumference if physical_data.calf_circumference else db_physical.calf_circumference
     db.commit()
     db.refresh(db_physical)
     return db_physical

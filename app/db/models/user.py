@@ -8,6 +8,7 @@ from app.db.session import Base
 
 class RoleEnum(enum.Enum):
     USER = "user"
+    COACH = "coach"
     ADMIN = "admin"
 
 

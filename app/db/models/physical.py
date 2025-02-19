@@ -9,10 +9,13 @@ class Physical(Base):
 
     id = Column(Integer, primary_key=True, index=True, autoincrement=True)
     date = Column(Date, nullable=False)
-    height = Column(Double, nullable=False)
-    weight = Column(Double, nullable=False)
-
-    # TODO: Add some fields to this table
+    height = Column(Double, nullable=True)
+    weight = Column(Double, nullable=True)
+    arm_circumference = Column(Double, nullable=True)
+    waist_circumference = Column(Double, nullable=True)
+    hip_circumference = Column(Double, nullable=True)
+    thigh_circumference = Column(Double, nullable=True)
+    calf_circumference = Column(Double, nullable=True)
 
     user_id = Column(Integer, ForeignKey("users.id"), nullable=False)
     user = relationship("User", back_populates="physical_data")

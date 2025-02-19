@@ -1,4 +1,5 @@
 import logging
+import os
 from datetime import timedelta
 from time import perf_counter, process_time
 
@@ -14,17 +15,21 @@ from app.dependencies import get_db
 from app.schemas.token import Token
 from app.services.auth import verify_password
 
+
+logger = logging.getLogger("[PhenixTracker]")
+logger.setLevel(logging.DEBUG)
+logger.addHandler(logging.StreamHandler())
+
+
+if os.environ.get("TEST"):
+    logger.info("Running in test mode")
+    Base.metadata.drop_all(bind=engine)
 Base.metadata.create_all(bind=engine)
 
 app = FastAPI(title="PhenixTracker - API", version="0.0.1")
 
 app.include_router(user.router, prefix="/users", tags=["Users"])
 app.include_router(physical.router, prefix="/physical", tags=["Physical"])
-
-
-logger = logging.getLogger("[PhenixTracker]")
-logger.setLevel(logging.DEBUG)
-logger.addHandler(logging.StreamHandler())
 
 
 @app.middleware("http")
