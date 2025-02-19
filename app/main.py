@@ -10,7 +10,8 @@ from sqlalchemy.orm import Session
 from app.api.v1.endpoints import physical, user
 from app.core.config import settings
 from app.core.security import create_access_token
-from app.db.session import Base, engine
+from app.db.init_db import init_db
+from app.db.session import Base, engine, SessionLocal
 from app.dependencies import get_db
 from app.schemas.token import Token
 from app.services.auth import verify_password
@@ -25,6 +26,14 @@ if os.environ.get("TEST"):
     logger.info("Running in test mode")
     Base.metadata.drop_all(bind=engine)
 Base.metadata.create_all(bind=engine)
+
+db = SessionLocal()
+try:
+    init_db(db)
+except Exception as e:
+    logger.error(f"Error initializing database: {e}")
+finally:
+    db.close()
 
 app = FastAPI(title="PhenixTracker - API", version="0.0.1")
 
