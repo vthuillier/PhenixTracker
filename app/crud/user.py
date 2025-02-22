@@ -1,11 +1,11 @@
 from sqlalchemy.orm import Session
 
-from app.db.models.user import User
+from app.db.models.user import User, RoleEnum
 from app.schemas.user import UserCreate
 from app.services.auth import hash_password, verify_password
 
 
-def create_user(db: Session, user_create: UserCreate) -> User:
+def create_user(db: Session, user_create: UserCreate, role: RoleEnum = RoleEnum.USER) -> User:
     hashed_password = hash_password(user_create.password)
     db_user = User(
         name=user_create.name,
@@ -13,6 +13,7 @@ def create_user(db: Session, user_create: UserCreate) -> User:
         birthdate=user_create.birthdate,
         email=user_create.email,
         hashed_password=hashed_password,
+        role=role
     )
     db.add(db_user)
     db.commit()

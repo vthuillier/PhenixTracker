@@ -10,4 +10,4 @@ class Exercise(Base):
     name = Column(String, nullable=False)
     description = Column(String)
     picture = Column(LargeBinary)
-    muscle_group_id = Column(Integer, ForeignKey("muscle_group.id"))
+    muscle_group_id = Column(Integer, ForeignKey("muscle.id"))
